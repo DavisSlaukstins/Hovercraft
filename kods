@@ -1,0 +1,102 @@
+#include <SoftwareSerial.h>
+#include <Servo.h>
+Servo myservo;
+int pos = 0;
+SoftwareSerial mySerial(8, 9);
+
+Servo MotorOne; 
+Servo Motor2;
+
+void setup()
+{
+  
+  mySerial.begin(57600);
+  Serial.begin(57600);
+  myservo.attach(5);
+  MotorOne.attach(7, 1000, 2000);
+  Motor2.attach(6, 1000, 2000);
+    
+
+  delay(100);
+}
+void loop()
+{
+
+  if (mySerial.available() > 0) {
+    int SerialData = mySerial.read();
+    Serial.println(SerialData);
+
+      
+    if (SerialData == 50)
+    {
+      /// daru to
+      Serial.println("nospiesta bulta uz augsu" );
+      for (pos = 0; pos <= 90; pos++)
+
+      {
+        myservo.write(pos);
+        delay(15);
+      }
+    }
+
+if (SerialData == 53)
+    {
+Serial.print("MAX uz motoru 2");
+      Motor2.write(180);
+      }
+
+
+
+      if (SerialData == 57)
+    {
+Serial.println("nospiesta bulta uz augsu" );
+      for (pos = 0; pos <= 180; pos++)
+
+      {
+        myservo.write(pos);
+        delay(15);
+      }
+      }
+
+
+
+
+      
+
+      if (SerialData == 55)
+    {
+Serial.print("puse uz motoru 2");
+      Motor2.write(50);
+      }
+      
+    if (SerialData == 54)
+    {
+
+      Serial.print("0 uz motoru 2");
+      Motor2.write(0);}
+    
+    else if (SerialData == 52)
+    {
+
+      Serial.println("nospiests uz leju" );
+      for (pos = 180; pos >=90; pos--)
+      {
+        myservo.write(pos);
+        delay(15);
+      }
+    }
+
+    else if( SerialData == 49)
+    {
+      Serial.print("0 uz motoru 1");
+      MotorOne.write(0);
+    }
+
+    else if( SerialData == 51)
+    {
+      Serial.print("MAX uz motoru 1");
+      MotorOne.write(180);
+    }
+
+  }
+}
